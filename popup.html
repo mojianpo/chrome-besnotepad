@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html ng-app="besnotepad">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/popup.css"/>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/popup.js"></script>
+</head>
+<body ng-controller="mapListCtrl">
+<div class="container">
+<div class="info">
+    <h1><img src="./icon.png" style="height: 40px" /> BES Notepad</h1>
+    Record every detail in your work. <br/>
+    Local Records<br/><br/>
+    记录工作中的点点滴滴。 <br/>
+    基于标签+标题方式进行内容记录。<br/>
+    支持快速查询浏览。<br/>
+</div> 
+<div class="btnBox">
+    <a href="options.html" target="_blank" tabIndex="-1" class="btn btn-primary btn-xs">管理记录</a>
+    <span ng-click="clickInfo()" style="cursor: pointer;background-color: #409eff;border-radius: 10%;color:#fff;line-height: 40px;display: inline-block;padding: 5px;">自动+</span>
+</div>   
+</div>
+</body>
+</html>

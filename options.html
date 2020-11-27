@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html ng-app="besnotepad">
+<head>
+    <meta charset="UTF-8">
+    <title>Options</title>
+    <link rel="icon" href="icon.png" mce_href="icon.png" type=”image/x-icon”>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/options.css"/>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/options.js"></script>
+</head>
+<body ng-controller="mapListCtrl">
+<div class="navbar navbar-inverse navbar-fixed-top top">
+    <div class="container">
+        <div class="btnBox">
+            <h3 style="display: inline-block;"><img src="./icon.png" style="height: 40px" />Record every detail in your work (Local Records).</h3>
+            <button class="btn btn-primary fr" ng-click="export()">导出</button>
+            <div class="file fr"><button class="btn btn-primary ">导入</button><input type="file" id="jsonFile"/></div>
+            <button class="btn btn-primary fr" ng-click="addRecord()"> + </button>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div style="display:{{editDisplay}};" class="editBox">
+        <button type="button" class="close" aria-hidden="true" ng-click="hideEditBox()">&times;</button>
+        <div class="errorMsg">{{inputError}}</div>
+
+        <div class="form-group">
+            <label for="res">标签:</label>
+            <input type="text" class="form-control" id="group" ng-model="curRecord.group"/>
+        </div>
+
+        <div class="form-group">
+            <label for="req">标题:</label>
+            <input type="text" class="form-control" id="title" ng-model="curRecord.title"/>
+        </div>
+
+        <div class="form-group">
+            <label for="req">URL:</label>
+            <input type="text" class="form-control" id="url" ng-model="curRecord.url"/>
+        </div>
+
+        <div class="form-group">
+            <label for="res">内容:</label>
+            <textarea type="text" class="form-control" id="content" ng-model="curRecord.content" rows="5" ></textarea>    
+        </div>
+
+        
+
+        <button class="btn-block btn btn-primary" ng-click="saveRecord()">保存</button>
+    </div>
+
+        <div>
+            <br/>
+            <input style="border: 1px solid #ccc;padding: 0 5px;width:200px;height:30px;line-height:30px;font-size:14px;border-radius: 4px;" ng-model="keyword" placeholder="关键字查找" ng-change="searchRecords()" />
+            <select style="border: 1px solid #ccc;padding: 0 5px;width:90px;height:30px;line-height:30px;font-size:14px;border-radius: 4px;" ng-model="mode" >
+                 <option value="table">表格</option>
+                 <option value="group">列表</option>
+            </select>  
+            <br/>  <br/>
+            <div ng-repeat="(group, recordsMap) in filterRecords track by $index" ng-if="mode === 'table'">
+           
+                    <table class="table table-hover table-bordered" style="table-layout: fixed;word-break:break-all;">
+                        <thead>
+                            <td style="width: 15%;">标签</td>
+                            <td style="width: 15%;">标题</td>
+                            <td style="width: 15%;">URL</td>
+                            <td style="width: 40%;">内容</td>
+                            <td style="width: 15%;">操作</td>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="record in recordsMap track by $index">
+                                <td ng-if="$index === 0" rowspan="{{recordsMap.length}}" style="vertical-align: middle;border-right: 1px solid #ddd;background: #fff;">{{group || '未命名'}}</td>
+                                <td style="overflow:hidden;vertical-align: middle;" title="{{record.title}}">{{record.title}}</td>
+                                <td style="overflow:hidden;vertical-align: middle;word-wrap: none;white-space: nowrap;" title="{{record.url}}"><a ng-if="record.url" href="{{record.url}}" target="_blank" style="width:90%;overflow: hidden;">{{record.url}}</a></a>&nbsp;</td>
+                                <td style="height:auto;" title="{{record.content}}">{{record.content}}</td>
+                                <td style="overflow:hidden;vertical-align: middle;text-align: center;">
+                                    <button ng-click="edit(record)" type="button" class="btn btn-primary btn-xs edit opt">编辑</button>
+                                    <button ng-click="removeUrl(record)" type="button" class="btn btn-default btn-xs remove opt">删除</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+            <div ng-repeat="(group, recordsMap) in filterRecords track by $index" ng-if="mode === 'group'">
+
+                <fieldset style="width: 100%;" >
+                    <legend>{{group || '未命名'}}</legend>
+                    <ul ng-repeat="record in recordsMap track by $index" class="groupset">
+                        <span><strong>{{record.title}}</strong></span>
+                        
+                        <li style="overflow:hidden;vertical-align: middle;word-wrap: none;white-space: nowrap;" title="{{record.url}}">URL:<a ng-if="record.url" href="{{record.url}}" target="_blank" style="width:90%;overflow: hidden;">{{record.url}}</a></a>&nbsp;</li>
+                        <li style="height:auto;" title="{{record.content}}">内容:{{record.content}}</li>
+                        <div style="overflow:hidden;vertical-align: middle;text-align: center;">
+                            <button ng-click="edit(record)" type="button" class="btn btn-primary btn-xs edit opt">编辑</button>
+                            <button ng-click="removeUrl(record)" type="button" class="btn btn-default btn-xs remove opt">删除</button>
+                        </div>
+                    </ul>
+                  </fieldset>
+                
+            </div>
+        
+        </div>
+
+</div>
+</body>
+</html>
